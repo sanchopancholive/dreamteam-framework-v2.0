@@ -1,0 +1,16 @@
+{
+    "name": "dreamteam/framework",
+    "description": "DreamTeam Framework",
+    "type": "project",
+    "version": "2.0.0",
+    "autoload": {
+        "psr-4": {
+            "DreamTeam\\Framework\\": "vendor/dreamteam/framework/"
+        },
+        "psr-0": {
+            "": [
+                "app/code/"
+            ]
+        }
+    }
+}

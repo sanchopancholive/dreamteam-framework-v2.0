@@ -1,0 +1,5 @@
+var/log/*
+!var/log/.htaccess
+pub/media/*
+!pub/media/.htaccess
+.idea/

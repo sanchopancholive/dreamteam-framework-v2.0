@@ -8,6 +8,14 @@ class Remove extends FrontAction
 {
     public function execute()
     {
-        // TODO: Implement execute() method.
+        $rootBlock = new \DreamTeam\Framework\Block\Root();
+        $rootBlock->addBlock('head', \DreamTeam\Framework\Block\Html\Head::class)
+            ->addBlock('page', \DreamTeam\Framework\Block\Html\Page::class);
+        $pageBlock = $rootBlock->getChild('page')->setTempValue('Hello World!!!!');
+        $output = $rootBlock->toHtml();
+        echo $output;
+        return;
+//        $block = new \DreamTeam\Framework\Block\Html\Page\Header();
+//        $block->getTemplate();
     }
 }

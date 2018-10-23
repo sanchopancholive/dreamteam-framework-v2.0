@@ -4,7 +4,7 @@ namespace DreamTeam\Framework\Controller;
 
 use DreamTeam\Framework\Api\ControllerActionInterface;
 
-class FrontAction implements ControllerActionInterface
+abstract class FrontAction implements ControllerActionInterface
 {
 
 }

@@ -10,9 +10,11 @@ abstract class AbstractBlock extends MainObject
 
     protected $children = [];
 
-    protected $template = null;
+    protected $sortedChildren = [];
 
-    public function addBlock($name, $block)
+    public $html = '';
+
+    public function addBlock($block, $name, $before = null)
     {
         if (!is_object($block)) {
             $block = $this->createBlock($block);
@@ -20,6 +22,12 @@ abstract class AbstractBlock extends MainObject
 
         if ($block) {
             $this->children[$name] = $block;
+            if ($after === null) {
+                $this->sortedChildren[] = $name;
+            } else {
+                $keyAfter = array_search($after, $this->sortedChildren);
+                array_splice( $this->sortedChildren, $keyAfter, 0, $name);
+            }
         }
 
         return $this;
@@ -36,8 +44,16 @@ abstract class AbstractBlock extends MainObject
         return $object;
     }
 
-    public function getChildHtml($name)
+    public function getChildHtml($name = null)
     {
+        $html = '';
+        if ($name === null) {
+            foreach ($this->sortedChildren as $key => $value) {
+                $html .= $this->getChildHtml($value);
+            }
+
+            return $html;
+        }
         return $this->getChild($name)->toHtml();
     }
 
@@ -48,36 +64,7 @@ abstract class AbstractBlock extends MainObject
 
     public function toHtml()
     {
-        ob_start();
-        $fileName = $this->getTemplatePath();
-        include $fileName;
-        /** Get output buffer. */
-        $html = ob_get_clean();
-        return $html;
+        return $this->html;
     }
 
-    public function setTemplate($template)
-    {
-        $this->template = $template;
-
-        return $this;
-    }
-
-    public function getTemplate()
-    {
-        return $this->template;
-    }
-
-    public function getTemplatePath()
-    {
-        $moduleAlias = explode('::', $this->getTemplate())[0];
-        $moduleClass = '\\' . explode('_', $moduleAlias)[0]
-            . '\\' . explode('_', $moduleAlias)[1] . '\\Module';
-        $moduleObj = new $moduleClass;
-        $tmpClass = new \ReflectionClass(get_class($moduleObj));
-        $path = dirname($tmpClass->getFileName()) . DIRECTORY_SEPARATOR
-            . explode('::', $this->getTemplate())[1];
-
-        return $path;
-    }
 }

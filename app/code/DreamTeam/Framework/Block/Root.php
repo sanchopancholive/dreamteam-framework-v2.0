@@ -2,7 +2,7 @@
 
 namespace DreamTeam\Framework\Block;
 
-class Root extends AbstractBlock
+class Root extends TemplateBlock
 {
     protected $template = 'DreamTeam_Framework::view/root.phtml';
 }
